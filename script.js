@@ -55,22 +55,33 @@ benzVаlue.oninput = function () {
 
 
     switch (true) {
-        case fuel < 1:
-            outH3.innerHTML = "Далеко не уедешь!"
+        case fuel === 0:
+            outH3.innerHTML = "Надо заправиться! 😢⛽";
             break;
 
-        case fuel >= 1 && fuel < 6:
-            outH3.innerHTML = "Запас хода:";
+        case fuel > 0 && fuel < 2:
+            outH3.innerHTML = "Далеко не уедешь! 😢";
             break;
 
-        case fuel >= 6 && fuel <= 11:
-            outH3.innerHTML = "Егор, покатай!";
+        case fuel >= 2 && fuel < 6:
+            outH3.innerHTML = "Запас хода: 🏍️💨";
             break;
 
-        case fuel > 11:
-            outH3.innerHTML = "Откуда столько бензина?"
+        case fuel >= 6 && fuel < 12:
+            outH3.innerHTML = "Егор, покатай! &#128516 🏍️💨";
+            break;
+
+        case fuel >= 12 && fuel <= 17:
+            outH3.innerHTML = "Откуда столько бензина? 🪖🏍️💨";
+            break;
+
+        case fuel > 17:
+            outH3.innerHTML = "Офигеть, полный бак! ⛽🔥";
             break;
     }
+
+
+
     selectedSpanBenz[0].innerHTML = benzVаlue.value;
     selectedSpanBenz[1].innerHTML = benzVаlue.value;
     selectedSpanNoColiascaKm.innerHTML = calculateRange(fuel, 'highway');
