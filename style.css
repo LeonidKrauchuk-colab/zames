@@ -14,9 +14,7 @@ body {
 }
 
 .conteiner {
-    border: 1px solid #525261;
-    border-radius: 10px;
-    background-color: #e5e5f0;
+
     margin: 10px;
     width: 150px;
     align-items: center;
@@ -24,14 +22,17 @@ body {
 }
 
 .radio_wrap {
-    border: 1px solid #525261;
     width: 360px;
     display: flex;
-    border-radius: 10px;
     justify-self: center;
-    background-color: #e5e5f0;
     margin-top: 20px;
     margin-bottom: 20px;
+}
+
+.body_wrap_element {
+    border: 1px solid #525261;
+    border-radius: 10px;
+    background-color: #e5e5f0;
 }
 
 input[type="radio"] {
@@ -46,13 +47,11 @@ fieldset {
 }
 
 .range {
-    border: 1px solid #525261;
     margin-top: 10px;
     width: 360px;
     display: flex;
-    background-color: #e5e5f0;
     justify-self: center;
-    border-radius: 10px;
+
 }
 
 .header {
@@ -62,7 +61,6 @@ fieldset {
 .p_header {
     text-align: center;
     font-size: 50px;
-    color: azure;
 }
 
 #benzin {
