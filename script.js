@@ -1,7 +1,7 @@
 
-let benzVаlue = document.getElementById('benzin');
-let outBenz = document.querySelector('.outBenz');
-let outOil = document.querySelector('.outOil');
+const benzVаlue = document.getElementById('benzin');
+const outBenz = document.querySelector('.outBenz');
+const outOil = document.querySelector('.outOil');
 let oil = 40;
 const selectedRadioEzda = document.querySelectorAll('input[name="ezda"]');
 const selectedRadioTip = document.querySelectorAll('input[name="variantOil"]');
@@ -19,7 +19,6 @@ const fun = document.querySelector('.fun');
 
 outOil.innerHTML = zames(benzVаlue.value, oil);
 selectedSpanBenz.innerHTML = benzVаlue.value;
-
 selectedSpanNoColiascaKm.innerHTML = calculateRange(fuel, 'highway');
 selectedSpanColiascaKm.innerHTML = calculateRange(fuel, 'sidecar');
 
@@ -85,11 +84,7 @@ benzVаlue.oninput = function () {
             fun.innerHTML = "Полный бак, пустая голова — идеальное состояние для поездки.";
             break;
     }
-
-
-
     selectedSpanBenz.innerHTML = benzVаlue.value;
-
     selectedSpanNoColiascaKm.innerHTML = calculateRange(fuel, 'highway');
     selectedSpanColiascaKm.innerHTML = calculateRange(fuel, 'sidecar');
     outBenz.innerHTML = benzVаlue.value;
