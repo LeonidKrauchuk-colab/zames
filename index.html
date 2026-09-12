@@ -5,10 +5,11 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>ZAMES</title>
-  <!-- <link rel="icon" href="favicon/"> -->
+  <link rel="icon" href="favicon/favicon.ico">
   <link rel="icon" href="favicon/favicon.svg" type="image/svg+xml">
   <link rel="apple-touch-icon" sizes="180x180" href="favicon/apple-touch-icon.png">
   <link rel="stylesheet" href="style.css">
+  <link rel="stylesheet" href="styleMoto.css">
 </head>
 
 <body>
@@ -78,8 +79,25 @@
     <p class="fun">План поездки: ехать. Остальное разберём по дороге.</p>
 
   </div>
+  <div class="moto">
+    <h1>🏍️ Фотографии мотоциклов</h1>
 
-  <script src="script.js" defer></script>
+    <div class="search">
+
+      <input id="searchInput" type="text" value="Minsk motorcycle" placeholder="Например: Honda motorcycle">
+
+      <button id="searchButton">
+        Найти
+      </button>
+
+    </div>
+
+    <div id="status"></div>
+
+    <div id="gallery" class="gallery"></div>
+  </div>
+  <script src="script.js"></script>
+  <script src="main.js" defer></script>
 </body>
 
 </html>

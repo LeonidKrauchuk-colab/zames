@@ -1,100 +1,115 @@
+const searchInput = document.querySelector("#searchInput");
+const searchButton = document.querySelector("#searchButton");
+const gallery = document.querySelector("#gallery");
+const status = document.querySelector("#status");
 
-const benzVаlue = document.getElementById('benzin');
-const outBenz = document.querySelector('.outBenz');
-const outOil = document.querySelector('.outOil');
-let oil = 40;
-const selectedRadioEzda = document.querySelectorAll('input[name="ezda"]');
-const selectedRadioTip = document.querySelectorAll('input[name="variantOil"]');
-const selectedRadio = document.querySelectorAll('input[type="radio"]');
-const consumption = {
-    highway: 5,
-    sidecar: 7.5
-};
-const outH3 = document.querySelector(".h3_info");
-const selectedSpanBenz = document.querySelector('.out_km');
-const selectedSpanNoColiascaKm = document.querySelector('.no_coliasca_km');
-const selectedSpanColiascaKm = document.querySelector('.coliasca_km');
-const fuel = +benzVаlue.value;
-const fun = document.querySelector('.fun');
+async function getMotorcycles(search = "motorcycle") {
 
-outOil.innerHTML = zames(benzVаlue.value, oil);
-selectedSpanBenz.innerHTML = benzVаlue.value;
-selectedSpanNoColiascaKm.innerHTML = calculateRange(fuel, 'highway');
-selectedSpanColiascaKm.innerHTML = calculateRange(fuel, 'sidecar');
+  try {
 
-function zames(a, b) {
-    if (selectedRadioTip[0].checked & selectedRadioEzda[0].checked) {
-        oil = 25;
-        b = oil
+    status.textContent = "Загрузка...";
+    status.className = "";
+
+    gallery.innerHTML = "";
+
+    const url =
+      "https://commons.wikimedia.org/w/api.php" +
+      "?action=query" +
+      "&generator=search" +
+      "&gsrsearch=" + encodeURIComponent(search) +
+      "&gsrnamespace=6" +
+      "&gsrlimit=12" +
+      "&prop=imageinfo" +
+      "&iiprop=url|extmetadata" +
+      "&iiurlwidth=500" +
+      "&format=json" +
+      "&origin=*";
+
+    const response = await fetch(url);
+
+    // Проверяем HTTP-ошибку
+    if (!response.ok) {
+      throw new Error(
+        `Ошибка сервера: ${response.status}`
+      );
     }
-    if (selectedRadioTip[0].checked & selectedRadioEzda[1].checked) {
-        oil = 20;
-        b = oil
+
+    const data = await response.json();
+
+    // Проверяем наличие результатов
+    if (!data.query || !data.query.pages) {
+      throw new Error(
+        "Фотографии не найдены"
+      );
     }
-    if (selectedRadioTip[1].checked & selectedRadioEzda[1].checked) {
-        oil = 25;
-        b = oil
-    }
-    if (selectedRadioTip[1].checked & selectedRadioEzda[0].checked) {
-        oil = 33;
-        b = oil
-    }
-    return Math.round((a / b) * 1000);
+
+    const pages = Object.values(data.query.pages);
+
+    status.textContent =
+      `Найдено фотографий: ${pages.length}`;
+
+    pages.forEach(page => {
+
+      const imageInfo = page.imageinfo?.[0];
+
+      if (!imageInfo) {
+        return;
+      }
+
+      const imageUrl =
+        imageInfo.thumburl || imageInfo.url;
+
+      const title =
+        page.title.replace("File:", "");
+
+      const card = document.createElement("div");
+
+      card.className = "card";
+
+      card.innerHTML = `
+        <img
+          src="${imageUrl}"
+          alt="${title}"
+          loading="lazy"
+        >
+
+        <div class="card-title">
+          ${title}
+        </div>
+      `;
+
+      gallery.appendChild(card);
+    });
+
+  } catch (error) {
+
+    console.error(error);
+
+    status.textContent =
+      `❌ ${error.message}`;
+
+    status.className = "error";
+  }
 }
 
-for (let index = 0; index < selectedRadio.length; index++) {
-    selectedRadio[index].onclick = function () {
-        outBenz.innerHTML = benzVаlue.value;
-        outOil.innerHTML = zames(benzVаlue.value, oil);
-    }
-}
 
-benzVаlue.oninput = function () {
-    const fuel = +benzVаlue.value;
+// Кнопка поиска
+searchButton.addEventListener("click", () => {
+
+  const search =
+    searchInput.value.trim();
+
+  if (!search) {
+
+    status.textContent =
+      "Введите название мотоцикла";
+
+    return;
+  }
+
+  getMotorcycles(search);
+});
 
 
-    switch (true) {
-        case fuel === 0:
-            outH3.innerHTML = "Надо заправиться! 😢⛽";
-            fun.innerHTML = "Режим эндуро: ищем заправку пешком.";
-            break;
-
-        case fuel > 0 && fuel < 2:
-            outH3.innerHTML = "Далеко не уедешь! 😢";
-            fun.innerHTML = "Бензина мало, зато уверенности полный бак.";
-            break;
-
-        case fuel >= 2 && fuel < 6:
-            outH3.innerHTML = "Запас хода: 🏍️💨";
-            fun.innerHTML = "Если не знаешь, куда ехать — езжай, пока не узнаешь.";
-            break;
-
-        case fuel >= 6 && fuel < 12:
-            outH3.innerHTML = "Егор, покатай! &#128516 🏍️💨";
-            fun.innerHTML = "Километры сами себя не накатают.";
-            break;
-
-        case fuel >= 12 && fuel <= 17:
-            outH3.innerHTML = "Откуда столько бензина? 🪖🏍️💨";
-            fun.innerHTML = "Бензин залит. Теперь осталось выбрать, куда я опять уеду.";
-            break;
-
-        case fuel > 17:
-            outH3.innerHTML = "Офигеть, полный бак! ⛽🔥";
-            fun.innerHTML = "Полный бак, пустая голова — идеальное состояние для поездки.";
-            break;
-    }
-    selectedSpanBenz.innerHTML = benzVаlue.value;
-    selectedSpanNoColiascaKm.innerHTML = calculateRange(fuel, 'highway');
-    selectedSpanColiascaKm.innerHTML = calculateRange(fuel, 'sidecar');
-    outBenz.innerHTML = benzVаlue.value;
-    outOil.innerHTML = zames(benzVаlue.value, oil);
-}
-
-function calculateRange(fuel, mode) {
-    const fuelConsumption = consumption[mode];
-    if (!fuelConsumption || fuel <= 0) {
-        return 0;
-    }
-    return Math.round((fuel / fuelConsumption) * 100);
-}
+// Запускаем сразу
+getMotorcycles();
