@@ -47,7 +47,8 @@ body {
     padding: 5px;
     margin: 0 auto;
     width: 350px;
-    height: 130px;
+    height: 135px;
+    margin-bottom: 20px;
 }
 
 .body_info,
